@@ -31,9 +31,8 @@ struct TabViewImpl: View {
     }
 #if !os(tvOS) && !os(macOS) && !os(visionOS)
     .onTabItemEvent({ index, isLongPress in
-      guard let key = props.items.filter({
-        !$0.hidden || $0.key == props.selectedPage
-      })[safe: index]?.key else { return }
+      let item = props.filteredItems[safe: index]
+      guard let key = item?.key else { return }
 
       if isLongPress {
         onLongPress(key)
@@ -52,6 +51,7 @@ struct TabViewImpl: View {
       onTabBarMeasured(
         Int(tabController.tabBar.frame.size.height)
       )
+      hideTabBarIfNeeded()
 #endif
     })
 #if !os(macOS)
@@ -71,6 +71,7 @@ struct TabViewImpl: View {
 #if os(tvOS) || os(macOS) || os(visionOS)
       onSelect(newValue)
 #endif
+      hideTabBarIfNeeded()
     }
   }
 
@@ -127,6 +128,12 @@ struct TabViewImpl: View {
       UISelectionFeedbackGenerator().selectionChanged()
     }
 #endif
+  }
+
+  func hideTabBarIfNeeded() {
+    let item = props.filteredItems.first {$0.key == props.selectedPage}
+    let tabBarHidden = item?.tabBarHidden ?? false
+    tabBar?.isHidden = tabBarHidden
   }
 }
 
@@ -209,15 +216,15 @@ private func configureStandardAppearance(tabBar: UITabBar, props: TabViewProps) 
   default:
     appearance.configureWithDefaultBackground()
   }
-  
+
   if props.translucent == false {
     appearance.configureWithOpaqueBackground()
   }
-  
+
   if props.barTintColor != nil {
     appearance.backgroundColor = props.barTintColor
   }
-  
+
   // Configure item appearance
   let itemAppearance = UITabBarItemAppearance()
   let fontSize = props.fontSize != nil ? CGFloat(props.fontSize!) : tabBarDefaultFontSize

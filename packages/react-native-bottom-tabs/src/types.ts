@@ -15,6 +15,7 @@ export type BaseRoute = {
   activeTintColor?: string;
   hidden?: boolean;
   testID?: string;
+  tabBarHidden?: boolean;
 };
 
 export type NavigationState<Route extends BaseRoute> = {

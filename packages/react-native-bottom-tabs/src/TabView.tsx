@@ -116,6 +116,14 @@ interface Props<Route extends BaseRoute> {
    */
   getTestID?: (props: { route: Route }) => string | undefined;
 
+  /**
+   * Get tabBarHidden for the tab, uses `route.tabBarHidden` by default.
+   * If `true`, the tab bar will be hidden.
+   */
+  getTabBarHidden?: (props: { route: Route }) => boolean | undefined;
+
+  tabBar?: () => React.ReactNode;
+
   tabBarStyle?: {
     /**
      * Background color of the tab bar.
@@ -172,8 +180,10 @@ const TabView = <Route extends BaseRoute>({
   getHidden = ({ route }: { route: Route }) => route.hidden,
   getActiveTintColor = ({ route }: { route: Route }) => route.activeTintColor,
   getTestID = ({ route }: { route: Route }) => route.testID,
-  tabBarStyle,
+  getTabBarHidden = ({ route }: { route: Route }) => route.tabBarHidden,
   hapticFeedbackEnabled = false,
+  tabBar: renderCustomTabBar,
+  tabBarStyle,
   tabLabelStyle,
   ...props
 }: Props<Route>) => {
@@ -238,6 +248,7 @@ const TabView = <Route extends BaseRoute>({
           activeTintColor: processColor(getActiveTintColor({ route })),
           hidden: getHidden?.({ route }),
           testID: getTestID?.({ route }),
+          tabBarHidden: !!renderCustomTabBar || getTabBarHidden?.({ route }),
         };
       }),
     [
@@ -248,6 +259,8 @@ const TabView = <Route extends BaseRoute>({
       getActiveTintColor,
       getHidden,
       getTestID,
+      getTabBarHidden,
+      renderCustomTabBar,
     ]
   );
 
@@ -333,6 +346,7 @@ const TabView = <Route extends BaseRoute>({
           );
         })}
       </NativeTabView>
+      {renderCustomTabBar?.() ?? null}
     </BottomTabBarHeightContext.Provider>
   );
 };
@@ -341,6 +355,7 @@ const styles = StyleSheet.create({
   fullWidth: {
     width: '100%',
     height: '100%',
+    flex: 1,
   },
 });
 

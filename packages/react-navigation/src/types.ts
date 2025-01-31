@@ -91,6 +91,11 @@ export type NativeBottomTabNavigationOptions = {
    * TestID for the tab.
    */
   tabBarButtonTestID?: string;
+
+  /**
+   * Whether to show the tab bar.
+   */
+  tabBarHidden?: boolean;
 };
 
 export type NativeBottomTabDescriptor = Descriptor<
@@ -103,6 +108,15 @@ export type NativeBottomTabDescriptorMap = Record<
   string,
   NativeBottomTabDescriptor
 >;
+
+export type BottomTabBarProps = {
+  state: TabNavigationState<ParamListBase>;
+  descriptors: NativeBottomTabDescriptorMap;
+  navigation: NavigationHelpers<
+    ParamListBase,
+    NativeBottomTabNavigationEventMap
+  >;
+};
 
 export type NativeBottomTabNavigationConfig = Partial<
   Omit<
@@ -117,5 +131,9 @@ export type NativeBottomTabNavigationConfig = Partial<
     | 'onTabLongPress'
     | 'getActiveTintColor'
     | 'getTestID'
+    | 'getTabBarHidden'
+    | 'tabBar'
   >
->;
+> & {
+  tabBar?: (props: BottomTabBarProps) => React.ReactNode;
+};

@@ -146,19 +146,19 @@ using namespace facebook::react;
   if (oldViewProps.inactiveTintColor != newViewProps.inactiveTintColor) {
     _tabViewProvider.inactiveTintColor = RCTUIColorFromSharedColor(newViewProps.inactiveTintColor);
   }
-  
+
   if (oldViewProps.hapticFeedbackEnabled != newViewProps.hapticFeedbackEnabled) {
     _tabViewProvider.hapticFeedbackEnabled = newViewProps.hapticFeedbackEnabled;
   }
-  
+
   if (oldViewProps.fontSize != newViewProps.fontSize) {
     _tabViewProvider.fontSize = [NSNumber numberWithInt:newViewProps.fontSize];
   }
-  
+
   if (oldViewProps.fontWeight != newViewProps.fontWeight) {
     _tabViewProvider.fontWeight = RCTNSStringFromStringNilIfEmpty(newViewProps.fontWeight);
   }
-  
+
   if (oldViewProps.fontFamily != newViewProps.fontFamily) {
     _tabViewProvider.fontFamily = RCTNSStringFromStringNilIfEmpty(newViewProps.fontFamily);
   }
@@ -173,7 +173,8 @@ bool areTabItemsEqual(const RNCTabViewItemsStruct& lhs, const RNCTabViewItemsStr
   lhs.badge == rhs.badge &&
   lhs.activeTintColor == rhs.activeTintColor &&
   lhs.hidden == rhs.hidden &&
-  lhs.testID == rhs.testID;
+  lhs.testID == rhs.testID &&
+  lhs.tabBarHidden == rhs.tabBarHidden;
 }
 
 bool haveTabItemsChanged(const std::vector<RNCTabViewItemsStruct>& oldItems,
@@ -202,7 +203,8 @@ NSArray* convertItemsToArray(const std::vector<RNCTabViewItemsStruct>& items) {
                                        sfSymbol:RCTNSStringFromStringNilIfEmpty(item.sfSymbol)
                                 activeTintColor:RCTUIColorFromSharedColor(item.activeTintColor)
                                          hidden:item.hidden
-                                         testID:RCTNSStringFromStringNilIfEmpty(item.testID)];
+                                         testID:RCTNSStringFromStringNilIfEmpty(item.testID)
+                                   tabBarHidden:item.tabBarHidden];
 
     [result addObject:tabInfo];
   }
