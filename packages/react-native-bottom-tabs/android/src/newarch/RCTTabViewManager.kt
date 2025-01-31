@@ -140,7 +140,6 @@ class RCTTabViewManager(context: ReactApplicationContext) :
   override fun setDisablePageAnimations(view: ReactBottomNavigationView?, value: Boolean) {
     view?.disablePageAnimations = value
   }
-
   // iOS Methods
   override fun setTranslucent(view: ReactBottomNavigationView?, value: Boolean) {
   }

@@ -30,6 +30,7 @@ export type TabViewItems = ReadonlyArray<{
   activeTintColor?: ProcessedColorValue | null;
   hidden?: boolean;
   testID?: string;
+  tabBarHidden?: boolean;
 }>;
 
 export interface TabViewProps extends ViewProps {

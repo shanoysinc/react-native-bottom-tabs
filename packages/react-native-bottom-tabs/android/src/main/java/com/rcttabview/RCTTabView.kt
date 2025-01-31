@@ -80,7 +80,7 @@ class ReactBottomNavigationView(context: Context) : LinearLayout(context) {
     ))
 
     post {
-      addOnLayoutChangeListener { _, left, top, right, bottom,
+      layoutHolder.addOnLayoutChangeListener { _, left, top, right, bottom,
                                   _, _, _, _ ->
         val newWidth = right - left
         val newHeight = bottom - top
@@ -168,6 +168,13 @@ class ReactBottomNavigationView(context: Context) : LinearLayout(context) {
       TransitionManager.beginDelayedTransition(layoutHolder, fadeThrough)
     }
 
+    val selectedItem = items[itemId]
+    if (selectedItem.tabBarHidden) {
+      bottomNavigation.visibility = GONE
+    } else {
+      bottomNavigation.visibility = VISIBLE
+    }
+
     layoutHolder.forEachIndexed { index, view ->
       if (itemId == index) {
         toggleViewVisibility(view, true)
@@ -196,6 +203,7 @@ class ReactBottomNavigationView(context: Context) : LinearLayout(context) {
     selectedItem.let {
       onTabSelectedListener?.invoke(selectedItem.key)
       emitHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK)
+
     }
   }
 
